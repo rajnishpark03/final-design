@@ -282,6 +282,32 @@
     background-size: 220px 220px;
   }
 
+  /* ---------- Pointer/touch flashlight (reveals low-contrast text) ---------- */
+  .flashlight {
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.16),
+      rgba(255, 255, 255, 0.06) 42%,
+      transparent 70%
+    );
+    mix-blend-mode: screen;
+    will-change: transform, opacity;
+  }
+  [data-theme="light"] .flashlight {
+    background: radial-gradient(
+      circle,
+      rgba(40, 28, 96, 0.16),
+      rgba(40, 28, 96, 0.05) 42%,
+      transparent 70%
+    );
+    mix-blend-mode: multiply;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .flashlight {
+      display: none;
+    }
+  }
+
   /* aurora base gradient (theme-aware) */
   .aurora-base {
     background: var(--aurora-base);

@@ -61,10 +61,10 @@ export const prizes = {
   titleAccent: "win?",
   grand: {
     badge: "GRAND PRIZE",
-    name: "iPhone 17",
+    name: "iPhone 15",
     description:
       "Awarded to the creator with the strongest combination of creativity, consistency, quality and performance.",
-    imageLabel: "Shop iPhone 17 image",
+    imageLabel: "Shop iPhone 15 image",
   },
   cards: [
     {

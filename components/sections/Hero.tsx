@@ -142,9 +142,9 @@ export default function Hero() {
           <Image
             src="/tutedude-logo.svg"
             alt="TuteDude"
-            width={28}
-            height={28}
-            className="rounded-md"
+            width={38}
+            height={38}
+            className="drop-shadow-[0_0_12px_rgba(139,110,245,0.7)]"
           />
           <span className="text-sm font-medium text-fg/70">
             {meta.brand}

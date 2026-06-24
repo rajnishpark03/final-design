@@ -10,7 +10,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { cn } from "@/lib/utils";
 
 export default function FAQ() {
-  const [open, setOpen] = useState<number | null>(0);
+  const [open, setOpen] = useState<number | null>(null);
 
   return (
     <SectionShell id="faq" eyebrow={faq.eyebrow} index={faq.index}>
@@ -42,23 +42,13 @@ export default function FAQ() {
                   <span className="text-lg font-bold text-fg sm:text-xl">
                     {item.q}
                   </span>
-                  <div className="flex items-center gap-3">
-                    <span
-                      className={cn(
-                        "rounded-full px-4 py-1.5 text-sm font-bold text-white shadow-lg",
-                        yes ? "bg-verde" : "bg-scarlet"
-                      )}
-                    >
-                      {item.a}
-                    </span>
-                    <motion.span
-                      animate={{ rotate: isOpen ? 135 : 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="flex h-8 w-8 items-center justify-center rounded-full bg-surface/10 text-fg"
-                    >
-                      <Plus className="h-4 w-4" />
-                    </motion.span>
-                  </div>
+                  <motion.span
+                    animate={{ rotate: isOpen ? 135 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface/10 text-fg"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </motion.span>
                 </button>
 
                 <AnimatePresence initial={false}>

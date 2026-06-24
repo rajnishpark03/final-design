@@ -32,7 +32,7 @@ export default function Prizes() {
         {/* Grand prize — large showcase */}
         <Reveal direction="scale" className="group lg:row-span-2">
           <TiltCard max={9} className="h-full">
-            <div className="glow-border relative flex h-full min-h-[460px] flex-col justify-between overflow-hidden rounded-4xl bg-gradient-to-br from-violet-600 via-violet-700 to-violet-900 p-8 shadow-glow">
+            <div className="glow-border glass-strong relative flex h-full min-h-[460px] flex-col justify-between overflow-hidden rounded-4xl bg-gradient-to-br from-violet-600/25 to-violet-900/10 p-8 shadow-glow backdrop-blur-2xl">
               <ParticleField density={40} color="183,164,255" interactive={false} />
               <div className="pointer-events-none absolute -right-16 top-10 h-56 w-56 rounded-full bg-ember/20 blur-3xl" />
 
@@ -50,12 +50,12 @@ export default function Prizes() {
                   className="relative"
                 >
                   <Image
-                    src="/iphone-15-green.png"
+                    src="/iphone-15-prize.png"
                     alt="iPhone 15 in green — the grand prize"
-                    width={360}
-                    height={720}
+                    width={914}
+                    height={1200}
                     priority
-                    className="h-auto w-40 drop-shadow-[0_28px_60px_rgba(0,0,0,0.55)] sm:w-44"
+                    className="h-auto w-44 drop-shadow-[0_28px_60px_rgba(0,0,0,0.55)] sm:w-52"
                   />
                 </motion.div>
               </div>

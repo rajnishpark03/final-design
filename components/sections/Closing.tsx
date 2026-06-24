@@ -111,8 +111,19 @@ export default function Closing() {
         </Reveal>
       </div>
 
+      {/* giant floating wordmark */}
+      <div className="pointer-events-none relative z-0 mt-16 flex justify-center overflow-hidden">
+        <motion.span
+          animate={{ y: [0, -16, 0], rotate: [-0.6, 0.6, -0.6] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+          className="select-none whitespace-nowrap bg-gradient-to-b from-violet-300/35 via-violet-500/15 to-transparent bg-clip-text font-display text-[19vw] font-extrabold leading-[0.8] tracking-tight text-transparent"
+        >
+          Tutedude
+        </motion.span>
+      </div>
+
       {/* footer bar */}
-      <div className="relative z-10 mt-20 border-t border-line/10">
+      <div className="relative z-10 -mt-[4vw] border-t border-line/10">
         <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-6 px-5 py-8 sm:flex-row sm:px-8">
           <div className="flex items-center gap-2">
             <Image
