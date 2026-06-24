@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Creator's Handbook — TuteDude iPhone Challenge
 
-## Getting Started
+An award-grade, cinematic, fully interactive web experience built from the
+official **TuteDude Creator's Handbook (2024 Edition)**. Every page of the
+handbook is reimagined as a unique animated section — the copy is preserved
+verbatim; only the presentation is transformed.
 
-First, run the development server:
+> _"Apple keynote meets an Awwwards Site of the Day."_
+
+---
+
+## ✨ Highlights
+
+- **Cinematic 3D hero** — a floating phone + trophy rendered with React Three
+  Fiber, dynamic lighting, sparkles and mouse parallax.
+- **Advanced custom cursor** — blob + dot with magnetic hover, stretch-on-speed,
+  text mode, click ripples, glow trail and contextual labels.
+- **Lenis smooth scroll** wired into a single GSAP `ScrollTrigger` ticker.
+- **A distinct animation language per section** — scroll-drawn timelines,
+  animated scoring bars, 3D tilt cards, spotlight cards, accordions, magnetic
+  buttons, infinite marquees, particle fields and aurora backgrounds.
+- **Dark, futuristic, glassmorphic** design system with organic gradients,
+  noise texture, animated grid and glow.
+- **Performance-minded** — dynamic import of the 3D scene, GPU-friendly canvas
+  particles (paused offscreen), `prefers-reduced-motion` honored throughout,
+  package-import optimization and code splitting.
+- **Responsive + accessible + SEO** — fluid typography, touch-aware cursor
+  fallback, semantic markup, Open Graph / Twitter metadata.
+
+## 🧱 Tech Stack
+
+| Area | Tooling |
+| --- | --- |
+| Framework | **Next.js 15** (App Router) + **React 19** |
+| Language | **TypeScript** |
+| Styling | **TailwindCSS** (custom design system) |
+| Animation | **Framer Motion**, **GSAP + ScrollTrigger**, **Motion One** primitives |
+| Smooth scroll | **Lenis** |
+| 3D | **Three.js** / **React Three Fiber** + **drei** |
+| Components | **ReactBits-style** primitives (re-implemented), shadcn-style patterns |
+| Icons | **Lucide**, **React Icons** |
+
+## 🚀 Getting Started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Build for production:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build && npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📁 Structure
 
-## Learn More
+```
+app/
+  layout.tsx          # fonts, SEO, global chrome (cursor, aurora, nav, dock)
+  page.tsx            # assembles every handbook section in order
+  globals.css         # design tokens, glass, aurora, cursor styles
+components/
+  providers/          # Lenis smooth-scroll provider
+  cursor/             # advanced custom cursor
+  three/              # React Three Fiber hero scene
+  ui/                 # reusable animation primitives (ReactBits-style)
+  sections/           # one component per handbook page
+lib/
+  content.ts          # ALL handbook copy, extracted verbatim
+  gsap.ts             # GSAP + ScrollTrigger registration
+  utils.ts            # cn(), lerp(), clamp()
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 📝 Content fidelity
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+All titles, descriptions, lists, FAQs, rules, the timeline, prizes and scoring
+live in [`lib/content.ts`](lib/content.ts), transcribed directly from the
+handbook PDF. Nothing was summarized, rewritten or removed — the experience is a
+pure visual re-imagining.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## ♿ Accessibility & motion
 
-## Deploy on Vercel
+The site fully respects `prefers-reduced-motion`: smooth scroll, particle
+loops, split-text and scrubbed timelines all degrade to instant, static
+states. The custom cursor is disabled on touch / coarse-pointer devices.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built for the **#30DayTuteDudeChallenge**.

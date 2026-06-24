@@ -1,26 +1,333 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@layer base {
+  /* ---------- Dark theme (default) ---------- */
+  :root,
+  [data-theme="dark"] {
+    --bg: #070711;
+    --bg-2: #0a0a1c;
+    --background: var(--bg);
+    --fg-rgb: 236 236 247;
+    --foreground: rgb(var(--fg-rgb));
+    --surface-rgb: 255 255 255; /* subtle overlays / borders */
+    --line-rgb: 255 255 255;
+    --grid-rgb: 255 255 255;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+    --glass-bg-1: rgba(255, 255, 255, 0.08);
+    --glass-bg-2: rgba(255, 255, 255, 0.02);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-strong-1: rgba(255, 255, 255, 0.12);
+    --glass-strong-2: rgba(255, 255, 255, 0.04);
+    --glass-strong-border: rgba(255, 255, 255, 0.14);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --aurora-base: radial-gradient(
+      125% 125% at 50% -10%,
+      #15103a 0%,
+      #0a0a1c 45%,
+      #070711 100%
+    );
+    --aurora-blob-opacity: 1;
+    --noise-opacity: 0.05;
+    --noise-blend: overlay;
+    --violet: #6d4df2;
+    --ember: #ff7a1a;
+    /* adaptive brand accent text — light tints for dark backgrounds */
+    --accent-violet-rgb: 168 146 248; /* violet-300 */
+    --accent-ember-rgb: 255 171 102; /* ember-300 */
+
+    /* Custom cursor (high-contrast on dark backgrounds) */
+    --cursor-dot: 255 255 255;
+    --cursor-ring: 168 146 248; /* violet-300 */
+    --cursor-glow: rgba(124, 92, 252, 0.55);
+    --cursor-contrast: rgba(0, 0, 0, 0.35);
+
+    color-scheme: dark;
+  }
+
+  /* ---------- Light theme ---------- */
+  [data-theme="light"] {
+    --bg: #f3f1fb;
+    --bg-2: #ffffff;
+    --background: var(--bg);
+    --fg-rgb: 24 21 48;
+    --foreground: rgb(var(--fg-rgb));
+    --surface-rgb: 28 22 70;
+    --line-rgb: 28 22 70;
+    --grid-rgb: 30 25 80;
+
+    --glass-bg-1: rgba(255, 255, 255, 0.72);
+    --glass-bg-2: rgba(255, 255, 255, 0.4);
+    --glass-border: rgba(28, 22, 70, 0.12);
+    --glass-strong-1: rgba(255, 255, 255, 0.85);
+    --glass-strong-2: rgba(255, 255, 255, 0.55);
+    --glass-strong-border: rgba(28, 22, 70, 0.16);
+
+    --aurora-base: radial-gradient(
+      125% 125% at 50% -10%,
+      #e9e2ff 0%,
+      #f1ecff 45%,
+      #fbfaff 100%
+    );
+    --aurora-blob-opacity: 0.45;
+    --noise-opacity: 0.04;
+    --noise-blend: multiply;
+    /* adaptive brand accent text — deeper tints for light backgrounds */
+    --accent-violet-rgb: 87 51 224; /* violet-700 */
+    --accent-ember-rgb: 179 78 5; /* ember-700 */
+
+    /* Custom cursor (high-contrast on light backgrounds) */
+    --cursor-dot: 39 23 102; /* deep violet */
+    --cursor-ring: 87 51 224; /* violet-700 */
+    --cursor-glow: rgba(87, 51, 224, 0.28);
+    --cursor-contrast: rgba(255, 255, 255, 0.7);
+
+    color-scheme: light;
+  }
+
+  /* Brand gradient text reads darker in light mode for contrast */
+  [data-theme="light"] .text-gradient-violet {
+    background: linear-gradient(120deg, #6d4df2 0%, #4727b8 55%, #5733e0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  [data-theme="light"] .text-gradient-ember {
+    background: linear-gradient(120deg, #ff7a1a 0%, #b34e05 60%, #e0640a 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  * {
+    border-color: rgb(var(--line-rgb) / 0.1);
+  }
+
+  html {
+    scroll-behavior: auto; /* Lenis owns scrolling */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), system-ui, sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* Hide native cursor only on devices that have a real pointer AND
+     only once the custom cursor is actually mounted. If the custom
+     cursor never activates, the native cursor always remains. */
+  @media (hover: hover) and (pointer: fine) {
+    body.has-custom-cursor,
+    body.has-custom-cursor * {
+      cursor: none !important;
+    }
+  }
+
+  ::selection {
+    background: rgba(109, 77, 242, 0.35);
+    color: #fff;
+  }
+
+  /* Lenis */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* ---------- Glass surfaces ---------- */
+  .glass {
+    background: linear-gradient(
+      135deg,
+      var(--glass-bg-1) 0%,
+      var(--glass-bg-2) 100%
+    );
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid var(--glass-border);
+  }
+
+  .glass-strong {
+    background: linear-gradient(
+      135deg,
+      var(--glass-strong-1) 0%,
+      var(--glass-strong-2) 100%
+    );
+    backdrop-filter: blur(28px) saturate(160%);
+    -webkit-backdrop-filter: blur(28px) saturate(160%);
+    border: 1px solid var(--glass-strong-border);
+  }
+
+  .glass-violet {
+    background: linear-gradient(
+      135deg,
+      rgba(109, 77, 242, 0.22) 0%,
+      rgba(109, 77, 242, 0.06) 100%
+    );
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid rgba(139, 110, 245, 0.28);
+  }
+
+  /* ---------- Text gradients ---------- */
+  .text-gradient-violet {
+    background: linear-gradient(120deg, #b7a4ff 0%, #6d4df2 45%, #8b6ef5 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .text-gradient-ember {
+    background: linear-gradient(120deg, #ffd9a8 0%, #ff7a1a 55%, #ff8f33 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Animated shiny text */
+  .shiny-text {
+    background: linear-gradient(
+      110deg,
+      rgb(var(--fg-rgb) / 0.5) 35%,
+      rgb(var(--fg-rgb) / 1) 50%,
+      rgb(var(--fg-rgb) / 0.5) 65%
+    );
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shiny-sweep 5s linear infinite;
+  }
+  @keyframes shiny-sweep {
+    0% {
+      background-position: 150% 0;
+    }
+    100% {
+      background-position: -150% 0;
+    }
+  }
+
+  /* ---------- Aurora background blobs ---------- */
+  .aurora-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.5;
+    will-change: transform;
+    pointer-events: none;
+  }
+
+  /* ---------- Grid & noise overlays ---------- */
+  .bg-grid {
+    background-image: linear-gradient(
+        rgb(var(--grid-rgb) / 0.045) 1px,
+        transparent 1px
+      ),
+      linear-gradient(90deg, rgb(var(--grid-rgb) / 0.045) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+  .mask-radial {
+    -webkit-mask-image: radial-gradient(
+      ellipse 70% 60% at 50% 40%,
+      #000 30%,
+      transparent 75%
+    );
+    mask-image: radial-gradient(
+      ellipse 70% 60% at 50% 40%,
+      #000 30%,
+      transparent 75%
+    );
+  }
+
+  .noise-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: var(--noise-opacity);
+    mix-blend-mode: var(--noise-blend);
+    background-image: url("/noise.svg");
+    background-size: 220px 220px;
+  }
+
+  /* aurora base gradient (theme-aware) */
+  .aurora-base {
+    background: var(--aurora-base);
+  }
+
+  /* ---------- Glow border ---------- */
+  .glow-border {
+    position: relative;
+  }
+  .glow-border::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      130deg,
+      rgba(139, 110, 245, 0.7),
+      rgba(255, 122, 26, 0.1) 40%,
+      transparent 60%,
+      rgba(139, 110, 245, 0.5)
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
+@layer utilities {
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+  .clip-reveal {
+    clip-path: inset(0 0 100% 0);
+  }
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  /* split-text base — characters animate from here */
+  .anim-char {
+    display: inline-block;
+    will-change: transform, opacity;
+  }
+}
+
+/* Respect reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
