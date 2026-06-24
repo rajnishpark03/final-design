@@ -549,18 +549,26 @@ function Worlds({ scale }: { scale: number }) {
 
 export default function PlanetScene() {
   const [scale, setScale] = useState(1);
+  // pause rendering when the tab is hidden — no point spinning planets nobody sees
+  const [active, setActive] = useState(true);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 768px)");
     const apply = () => setScale(mq.matches ? 0.62 : 1);
     apply();
     mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
+    const onVis = () => setActive(!document.hidden);
+    document.addEventListener("visibilitychange", onVis);
+    return () => {
+      mq.removeEventListener("change", apply);
+      document.removeEventListener("visibilitychange", onVis);
+    };
   }, []);
 
   return (
     <Canvas
-      dpr={[1, 1.6]}
+      frameloop={active ? "always" : "never"}
+      dpr={[1, 1.5]}
       camera={{ position: [0, 0, 12], fov: 32 }}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       style={{ pointerEvents: "none" }}

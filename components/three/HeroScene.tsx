@@ -2,7 +2,7 @@
 
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, Sparkles } from "@react-three/drei";
-import { useRef, Suspense } from "react";
+import { useRef, useState, useEffect, Suspense } from "react";
 import * as THREE from "three";
 
 /* ---------------- Floating trophy ---------------- */
@@ -60,25 +60,54 @@ function Rig() {
 }
 
 export default function HeroScene() {
+  const wrap = useRef<HTMLDivElement>(null);
+  // Only render frames while the hero is on screen and the tab is visible —
+  // stops the GPU work the moment you scroll past or switch tabs.
+  const [active, setActive] = useState(true);
+
+  useEffect(() => {
+    const el = wrap.current;
+    if (!el) return;
+    let inView = true;
+    const recompute = () => setActive(inView && !document.hidden);
+    const io = new IntersectionObserver(
+      ([e]) => {
+        inView = e.isIntersecting;
+        recompute();
+      },
+      { threshold: 0, rootMargin: "120px" }
+    );
+    io.observe(el);
+    document.addEventListener("visibilitychange", recompute);
+    recompute();
+    return () => {
+      io.disconnect();
+      document.removeEventListener("visibilitychange", recompute);
+    };
+  }, []);
+
   return (
-    <Canvas
-      dpr={[1, 1.8]}
-      camera={{ position: [0, 0, 8], fov: 38 }}
-      gl={{ antialias: true, alpha: true }}
-      style={{ pointerEvents: "none" }}
-    >
-      <Suspense fallback={null}>
-        <Rig />
-        <Trophy />
-        <Sparkles
-          count={70}
-          scale={[12, 8, 4]}
-          size={2.4}
-          speed={0.4}
-          color="#b7a4ff"
-          opacity={0.6}
-        />
-      </Suspense>
-    </Canvas>
+    <div ref={wrap} style={{ position: "absolute", inset: 0 }}>
+      <Canvas
+        frameloop={active ? "always" : "never"}
+        dpr={[1, 1.5]}
+        camera={{ position: [0, 0, 8], fov: 38 }}
+        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+        style={{ pointerEvents: "none" }}
+      >
+        <Suspense fallback={null}>
+          <Rig />
+          <Trophy />
+          <Sparkles
+            count={70}
+            scale={[12, 8, 4]}
+            size={2.4}
+            speed={0.4}
+            color="#b7a4ff"
+            opacity={0.6}
+          />
+        </Suspense>
+      </Canvas>
+    </div>
   );
 }

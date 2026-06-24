@@ -40,6 +40,10 @@ export default function SpaceBackground() {
       {/* deep-navy sky with a warm horizon glow (strong on dark, faint on light) */}
       <div className="space-tint absolute inset-0" />
 
+      {/* galaxy nebula clouds + a soft milky-way band (pure CSS, GPU-cheap) */}
+      <div className="galaxy absolute inset-0" />
+      <div className="milky-way absolute inset-0" />
+
       {/* stars */}
       <div className="space-stars absolute inset-0">
         {STARS.map((s, i) => (
@@ -102,6 +106,81 @@ export default function SpaceBackground() {
               transparent 100%
             );
           opacity: 1;
+        }
+
+        /* ---- galaxy nebula: a few large, soft colour clouds drifting slowly ---- */
+        .galaxy {
+          background:
+            radial-gradient(
+              42% 38% at 22% 32%,
+              rgba(124, 92, 252, 0.32) 0%,
+              transparent 70%
+            ),
+            radial-gradient(
+              48% 42% at 80% 24%,
+              rgba(56, 96, 220, 0.26) 0%,
+              transparent 72%
+            ),
+            radial-gradient(
+              50% 46% at 68% 78%,
+              rgba(214, 86, 196, 0.2) 0%,
+              transparent 74%
+            ),
+            radial-gradient(
+              40% 40% at 14% 82%,
+              rgba(255, 140, 90, 0.14) 0%,
+              transparent 72%
+            );
+          filter: blur(8px) saturate(120%);
+          opacity: 0.85;
+          will-change: transform, opacity;
+          animation: galaxy-drift 60s ease-in-out infinite;
+        }
+        @keyframes galaxy-drift {
+          0%,
+          100% {
+            transform: translate3d(0, 0, 0) scale(1.02);
+            opacity: 0.85;
+          }
+          50% {
+            transform: translate3d(-2.5%, 1.5%, 0) scale(1.12);
+            opacity: 1;
+          }
+        }
+
+        /* diagonal milky-way band: bright dust core fading at the edges */
+        .milky-way {
+          background: linear-gradient(
+            122deg,
+            transparent 30%,
+            rgba(190, 200, 255, 0.05) 44%,
+            rgba(214, 196, 255, 0.12) 50%,
+            rgba(190, 200, 255, 0.05) 56%,
+            transparent 70%
+          );
+          -webkit-mask-image: radial-gradient(
+            120% 80% at 50% 50%,
+            #000 35%,
+            transparent 80%
+          );
+          mask-image: radial-gradient(
+            120% 80% at 50% 50%,
+            #000 35%,
+            transparent 80%
+          );
+          opacity: 0.7;
+        }
+        :global([data-theme="light"]) .galaxy {
+          opacity: 0.4;
+          filter: blur(10px) saturate(110%);
+        }
+        :global([data-theme="light"]) .milky-way {
+          opacity: 0.3;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .galaxy {
+            animation: none;
+          }
         }
 
         .star {
