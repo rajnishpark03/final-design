@@ -185,12 +185,47 @@ export default function BuildathonPage() {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#2b0a30] font-sans text-white">
-      {/* glow background */}
+      {/* glow background + animated grid */}
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute inset-0 bg-[radial-gradient(125%_85%_at_50%_-10%,#5d1659_0%,#360e3a_42%,#1c0922_100%)]" />
+        {/* animated grid — slow drift, radial-masked, cheap (GPU-composited) */}
+        <div className="bld-grid absolute inset-0" />
         <div className="absolute -right-[10%] top-[14%] h-[42rem] w-[42rem] rounded-full bg-[radial-gradient(circle,rgba(206,46,160,0.34),transparent_70%)] blur-3xl" />
         <div className="absolute -left-[12%] top-[55%] h-[38rem] w-[38rem] rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.3),transparent_70%)] blur-3xl" />
       </div>
+
+      <style jsx>{`
+        .bld-grid {
+          background-image: linear-gradient(
+              rgba(237, 193, 104, 0.06) 1px,
+              transparent 1px
+            ),
+            linear-gradient(90deg, rgba(206, 130, 230, 0.07) 1px, transparent 1px);
+          background-size: 54px 54px;
+          -webkit-mask-image: radial-gradient(
+            ellipse 75% 60% at 50% 38%,
+            #000 35%,
+            transparent 78%
+          );
+          mask-image: radial-gradient(
+            ellipse 75% 60% at 50% 38%,
+            #000 35%,
+            transparent 78%
+          );
+          will-change: background-position;
+          animation: bld-grid-drift 24s linear infinite;
+        }
+        @keyframes bld-grid-drift {
+          to {
+            background-position: 54px 54px;
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .bld-grid {
+            animation: none;
+          }
+        }
+      `}</style>
 
       {/* ---------------------------------------------------------- navbar --- */}
       <header className="sticky top-0 z-50 border-b border-white/5 bg-[#2b0a30]/60 backdrop-blur-xl">
